@@ -4,6 +4,7 @@ const typeDefs = gql`
     type User {
         name: String!
         username: String!
+        id: ID!
         age: Int!
         nationality: String!
     }
@@ -11,3 +12,5 @@ const typeDefs = gql`
         users: [User!]!
     }
 `;
+
+module.exports = { typeDefs };
