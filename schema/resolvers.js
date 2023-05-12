@@ -2,10 +2,10 @@ const { UserList } = require("../FakeData");
 
 const resolvers = {
     Query: {
-        users() {
-
+        users: () => {
             return UserList
         },
+
     },
 };
 
