@@ -8,10 +8,10 @@ const UserList = [
       friends: [
         {
           id: 2,
-          name: "Pedro",
-          username: "PedroTech",
-          age: 20,
-          nationality: "BRAZIL",
+          name: "Jiali",
+          username: "Julia",
+          age: 18,
+          nationality: "CHINA",
         },
         {
           id: 5,
@@ -24,10 +24,10 @@ const UserList = [
     },
     {
       id: 2,
-      name: "Pedro",
-      username: "PedroTech",
-      age: 20,
-      nationality: "BRAZIL",
+      name: "Jiali",
+      username: "Julia",
+      age: 18,
+      nationality: "CHINA",
     },
     {
       id: 3,
@@ -38,8 +38,8 @@ const UserList = [
       friends: [
         {
           id: 2,
-          name: "Pedro",
-          username: "PedroTech",
+          name: "Julia",
+          username: "Julia",
           age: 20,
           nationality: "BRAZIL",
         },
@@ -82,7 +82,7 @@ const UserList = [
     },
     {
       id: 4,
-      name: "PedroTech The Movie",
+      name: "Julia The Movie",
       yearOfPublication: 2035,
       isInTheaters: false,
     },
