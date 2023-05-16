@@ -8,6 +8,7 @@ const QUERY_USERSDATA = gql`
             name
             age
             username
+            nationality
         }
 }
 `
@@ -23,9 +24,23 @@ function DisplayData() {
         console.log(error)
     }
 
+    if (data) {
+        console.log(data)
+    }
+
     return (
         <div>
-            1.
+            {data &&
+                data.users.map((user) => {
+                    return (
+                        <div key = {user.id}>
+                            <h1>Name:{user.name}</h1>
+                            <h1>Username:{user.username}</h1>
+                            <h1>Age:{user.age}</h1>
+                            <h1>Nationality:{user.nationality}</h1>
+                        </div>
+                    )
+                })}
         </div>
     )
 }
