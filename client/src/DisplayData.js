@@ -1,5 +1,5 @@
-import { gql, useQuery } from '@apollo/client'
-import React from 'react'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import React, { useState } from 'react'
 
 const QUERY_USERSDATA = gql`
     query UsersData {
@@ -10,7 +10,7 @@ const QUERY_USERSDATA = gql`
             username
             nationality
         }
-}
+    }
 `
 
 const QUERY_MOVIESDATA = gql`
@@ -23,9 +23,20 @@ const QUERY_MOVIESDATA = gql`
     }
 `
 
+const GET_MOVIE_BY_NAME = gql`
+    query Movie($name: String!) {
+        movie(name: $name) {
+            name
+            yearOfPublication
+        }
+    }
+`
+
 function DisplayData() {
+    const [movieSearch, setMovieSearch] = useState("")
     const { data, loading, error } = useQuery(QUERY_USERSDATA);
     const { data: movieData } = useQuery(QUERY_MOVIESDATA);
+    const [fetchMovie, { data: movieSearchData, error: movieError }] = useLazyQuery(GET_MOVIE_BY_NAME)
 
 
     if (loading) {
@@ -34,10 +45,6 @@ function DisplayData() {
 
     if (error) {
         console.log(error)
-    }
-
-    if (data) {
-        console.log(data)
     }
 
     return (
@@ -61,10 +68,30 @@ function DisplayData() {
                         <div key={movie.id}>
                             <p>Movie Name:{movie.name}</p>
                             <p>Publicated in:{movie.yearOfPublication}</p>
-                            <p>Is it in theaters:{movie.isInTheaters}</p>
                         </div>
                     )
                 })}
+            <div>
+                <input
+                    type="text"
+                    placeholder="Interstellar..."
+                    onChange={(event) => { setMovieSearch(event.target.value) }} />
+                <button onClick={() => {
+                    fetchMovie({
+                        variables: {
+                            name: movieSearch,
+                        }
+                    })
+                }}>Search Movie</button>
+                <div>
+                    {movieSearchData && 
+                    <div>
+                        <p>Movie's Name: {movieSearchData.movie.name}</p>
+                        <p>Publicated in: {movieSearchData.movie.yearOfPublication}</p>
+                    </div>
+                    }
+                </div>
+            </div>
         </div>
     )
 }
