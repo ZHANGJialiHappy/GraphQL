@@ -90,6 +90,7 @@ function DisplayData() {
                         <p>Publicated in: {movieSearchData.movie.yearOfPublication}</p>
                     </div>
                     }
+                    {movieError && <p>{movieSearch} can't be found.</p>}
                 </div>
             </div>
         </div>
