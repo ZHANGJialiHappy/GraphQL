@@ -38,7 +38,6 @@ function DisplayData() {
     const { data: movieData } = useQuery(QUERY_MOVIESDATA);
     const [fetchMovie, { data: movieSearchData, error: movieError }] = useLazyQuery(GET_MOVIE_BY_NAME)
 
-
     if (loading) {
         return <h1> DATA IS LOADING...</h1>
     }
@@ -49,18 +48,6 @@ function DisplayData() {
 
     return (
         <div>
-            <h1>List of Users</h1>
-            {data &&
-                data.users.map((user) => {
-                    return (
-                        <div key={user.id}>
-                            <p>Name:{user.name}</p>
-                            <p>Username:{user.username}</p>
-                            <p>Age:{user.age}</p>
-                            <p>Nationality:{user.nationality}</p>
-                        </div>
-                    )
-                })}
             <h1>List of Movies</h1>
             {movieData &&
                 movieData.movies.map((movie) => {
@@ -93,6 +80,18 @@ function DisplayData() {
                     {movieError && <p>{movieSearch} can't be found.</p>}
                 </div>
             </div>
+            <h1>List of Users</h1>
+            {data &&
+                data.users.map((user) => {
+                    return (
+                        <div key={user.id}>
+                            <p>Name:{user.name}</p>
+                            <p>Username:{user.username}</p>
+                            <p>Age:{user.age}</p>
+                            <p>Nationality:{user.nationality}</p>
+                        </div>
+                    )
+                })}
         </div>
     )
 }
