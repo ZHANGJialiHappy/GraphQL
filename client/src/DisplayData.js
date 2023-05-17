@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 
 const QUERY_USERSDATA = gql`
@@ -32,11 +32,28 @@ const GET_MOVIE_BY_NAME = gql`
     }
 `
 
+const CREATE_USER_MUTATION = gql`
+    mutation CreateUSer($input: CreateUserInput!) {
+        createUser(input: $input) {
+        name
+        id
+        }
+    }
+`
+
 function DisplayData() {
     const [movieSearch, setMovieSearch] = useState("")
+
+    // Create User States
+    const [name, setName] = useState("")
+    const [username, setUsername] = useState("")
+    const [age, setAge] = useState(0)
+    const [nationality, setNationality] = useState("")
+
     const { data, loading, error } = useQuery(QUERY_USERSDATA);
     const { data: movieData } = useQuery(QUERY_MOVIESDATA);
-    const [fetchMovie, { data: movieSearchData, error: movieError }] = useLazyQuery(GET_MOVIE_BY_NAME)
+    const [fetchMovie, { data: movieSearchData, error: movieError }] = useLazyQuery(GET_MOVIE_BY_NAME);
+    const [createUser] = useMutation(CREATE_USER_MUTATION)
 
     if (loading) {
         return <h1> DATA IS LOADING...</h1>
@@ -49,15 +66,6 @@ function DisplayData() {
     return (
         <div>
             <h1>List of Movies</h1>
-            {movieData &&
-                movieData.movies.map((movie) => {
-                    return (
-                        <div key={movie.id}>
-                            <p>Movie Name:{movie.name}</p>
-                            <p>Publicated in:{movie.yearOfPublication}</p>
-                        </div>
-                    )
-                })}
             <div>
                 <input
                     type="text"
@@ -80,7 +88,30 @@ function DisplayData() {
                     {movieError && <p>{movieSearch} can't be found.</p>}
                 </div>
             </div>
+            {movieData &&
+                movieData.movies.map((movie) => {
+                    return (
+                        <div key={movie.id}>
+                            <p>Movie Name:{movie.name}</p>
+                            <p>Publicated in:{movie.yearOfPublication}</p>
+                        </div>
+                    )
+                })}
             <h1>List of Users</h1>
+            <div>
+                <input type="text" placeholder="Name..." onChange={(event) => { setName(event.target.value) }} /> 
+                <input type="text" placeholder="Username..." onChange={(event) => { setUsername(event.target.value) }} />
+                <input type="number" placeholder="Age..." onChange={(event) => { setAge(Number(event.target.value)) }} />
+                <input type="text" placeholder="NATIONALITY..." onChange={(event) => { setNationality(event.target.value.toUpperCase()) }} />
+                <button 
+                onClick={()=>{
+                    createUser({
+                        variables: { input: { name, username, age, nationality}},
+                    });
+                }}> 
+                Create User 
+                </button>
+            </div>
             {data &&
                 data.users.map((user) => {
                     return (
