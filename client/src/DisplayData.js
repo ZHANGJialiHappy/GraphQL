@@ -37,7 +37,7 @@ const CREATE_USER_MUTATION = gql`
         createUser(input: $input) {
         name
         id
-        }
+        } 
     }
 `
 
@@ -50,17 +50,13 @@ function DisplayData() {
     const [age, setAge] = useState(0)
     const [nationality, setNationality] = useState("")
 
-    const { data, loading, error } = useQuery(QUERY_USERSDATA);
+    const { data, loading, refetch } = useQuery(QUERY_USERSDATA);
     const { data: movieData } = useQuery(QUERY_MOVIESDATA);
     const [fetchMovie, { data: movieSearchData, error: movieError }] = useLazyQuery(GET_MOVIE_BY_NAME);
     const [createUser] = useMutation(CREATE_USER_MUTATION)
 
     if (loading) {
         return <h1> DATA IS LOADING...</h1>
-    }
-
-    if (error) {
-        console.log(error)
     }
 
     return (
@@ -108,6 +104,7 @@ function DisplayData() {
                     createUser({
                         variables: { input: { name, username, age, nationality}},
                     });
+                    refetch();
                 }}> 
                 Create User 
                 </button>
