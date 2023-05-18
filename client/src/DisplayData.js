@@ -33,11 +33,19 @@ const GET_MOVIE_BY_NAME = gql`
 `
 
 const CREATE_USER_MUTATION = gql`
-    mutation CreateUSer($input: CreateUserInput!) {
+    mutation CreateUser($input: CreateUserInput!) {
         createUser(input: $input) {
         name
         id
         } 
+    }
+`
+
+const DELETE_USER_MUTATION = gql`
+    mutation DeleteUser($deleteUserId: ID!) {
+        deleteUser(id: $deleteUserId) {
+            id
+        }
     }
 `
 
@@ -50,10 +58,14 @@ function DisplayData() {
     const [age, setAge] = useState(0)
     const [nationality, setNationality] = useState("")
 
+    // delete user
+    const [id, setId] = useState("")
+
     const { data, loading, refetch } = useQuery(QUERY_USERSDATA);
     const { data: movieData } = useQuery(QUERY_MOVIESDATA);
     const [fetchMovie, { data: movieSearchData, error: movieError }] = useLazyQuery(GET_MOVIE_BY_NAME);
-    const [createUser] = useMutation(CREATE_USER_MUTATION)
+    const [createUser] = useMutation(CREATE_USER_MUTATION);
+    const [deleteUser] = useMutation(DELETE_USER_MUTATION);
 
     if (loading) {
         return <h1> DATA IS LOADING...</h1>
@@ -75,11 +87,11 @@ function DisplayData() {
                     })
                 }}>Search Movie</button>
                 <div>
-                    {movieSearchData && 
-                    <div>
-                        <p>Movie's Name: {movieSearchData.movie.name}</p>
-                        <p>Publicated in: {movieSearchData.movie.yearOfPublication}</p>
-                    </div>
+                    {movieSearchData &&
+                        <div>
+                            <p>Movie's Name: {movieSearchData.movie.name}</p>
+                            <p>Publicated in: {movieSearchData.movie.yearOfPublication}</p>
+                        </div>
                     }
                     {movieError && <p>{movieSearch} can't be found.</p>}
                 </div>
@@ -95,19 +107,31 @@ function DisplayData() {
                 })}
             <h1>List of Users</h1>
             <div>
-                <input type="text" placeholder="Name..." onChange={(event) => { setName(event.target.value) }} /> 
+                <input type="text" placeholder="Name..." onChange={(event) => { setName(event.target.value) }} />
                 <input type="text" placeholder="Username..." onChange={(event) => { setUsername(event.target.value) }} />
                 <input type="number" placeholder="Age..." onChange={(event) => { setAge(Number(event.target.value)) }} />
                 <input type="text" placeholder="NATIONALITY..." onChange={(event) => { setNationality(event.target.value.toUpperCase()) }} />
-                <button 
-                onClick={()=>{
-                    createUser({
-                        variables: { input: { name, username, age, nationality}},
-                    });
-                    refetch();
-                }}> 
-                Create User 
+                <button
+                    onClick={() => {
+                        createUser({
+                            variables: { input: { name, username, age, nationality } },
+                        });
+                        refetch();
+                    }}>
+                    Create User
                 </button>
+            </div>
+            <div>
+            <input type="text" placeholder="id..." onChange={(event) => { setId(event.target.value) }} />
+                <button
+                    onClick={() => {
+                        deleteUser({
+                            variables: { deleteUserId: id },
+                        });
+                        refetch();
+                    }}>
+                    delete User
+                </button> 
             </div>
             {data &&
                 data.users.map((user) => {
