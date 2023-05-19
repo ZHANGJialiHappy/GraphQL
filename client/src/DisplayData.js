@@ -74,7 +74,7 @@ function DisplayData() {
 
     return (
         <div>
-            <h1>List of Audience</h1>
+            <h1>Movies List</h1>
             <div>
                 <input
                     type="text"
@@ -116,7 +116,7 @@ function DisplayData() {
                         })}
                 </tbody>
             </table>
-            <h1>List of Users</h1>
+            <h1>Audience list</h1>
             <div>
                 <input type="text" placeholder="Name..." onChange={(event) => { setName(event.target.value) }} />
                 <input type="text" placeholder="Username..." onChange={(event) => { setUsername(event.target.value) }} />
