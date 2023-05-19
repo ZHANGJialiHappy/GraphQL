@@ -16,6 +16,7 @@ const QUERY_USERSDATA = gql`
 const QUERY_MOVIESDATA = gql`
     query MoviesData {
         movies {
+            id
             name
             yearOfPublication
             isInTheaters
@@ -73,7 +74,7 @@ function DisplayData() {
 
     return (
         <div>
-            <h1>List of Movies</h1>
+            <h1>List of Audience</h1>
             <div>
                 <input
                     type="text"
@@ -96,15 +97,25 @@ function DisplayData() {
                     {movieError && <p>{movieSearch} can't be found.</p>}
                 </div>
             </div>
-            {movieData &&
-                movieData.movies.map((movie) => {
-                    return (
-                        <div key={movie.id}>
-                            <p>Movie Name:{movie.name}</p>
-                            <p>Publicated in:{movie.yearOfPublication}</p>
-                        </div>
-                    )
-                })}
+            <table style={{ width: '100%' }}>
+                <thead>
+                    <tr>
+                        <th>Movie's name</th>
+                        <th>Publicated in</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {movieData &&
+                        movieData.movies.map((movie) => {
+                            return (
+                                <tr key={movie.id}>
+                                    <td>{movie.name}</td>
+                                    <td>{movie.yearOfPublication}</td>
+                                </tr>
+                            )
+                        })}
+                </tbody>
+            </table>
             <h1>List of Users</h1>
             <div>
                 <input type="text" placeholder="Name..." onChange={(event) => { setName(event.target.value) }} />
@@ -122,7 +133,7 @@ function DisplayData() {
                 </button>
             </div>
             <div>
-            <input type="text" placeholder="id..." onChange={(event) => { setId(event.target.value) }} />
+                <input type="text" placeholder="id..." onChange={(event) => { setId(event.target.value) }} />
                 <button
                     onClick={() => {
                         deleteUser({
@@ -131,20 +142,32 @@ function DisplayData() {
                         refetch();
                     }}>
                     delete User
-                </button> 
+                </button>
             </div>
-            {data &&
-                data.users.map((user) => {
-                    return (
-                        <div key={user.id}>
-                            <p>Name:{user.name}</p>
-                            <p>Username:{user.username}</p>
-                            <p>Age:{user.age}</p>
-                            <p>Nationality:{user.nationality}</p>
-                        </div>
-                    )
-                })}
-        </div>
+            <table style={{ width: '100%' }}>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Age</th>
+                        <th>Nationality</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data &&
+                        data.users.map((user) => {
+                            return (
+                                <tr key={user.id}>
+                                    <td>{user.name}</td>
+                                    <td>{user.username}</td>
+                                    <td>{user.age}</td>
+                                    <td>{user.nationality}</td>
+                                </tr>
+                            )
+                        })}
+                </tbody>
+            </table>
+        </div >
     )
 }
 
