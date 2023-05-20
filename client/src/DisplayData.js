@@ -37,7 +37,7 @@ const CREATE_USER_MUTATION = gql`
     mutation CreateUser($input: CreateUserInput!) {
         createUser(input: $input) {
         name
-        id
+
         } 
     }
 `
@@ -147,6 +147,7 @@ function DisplayData() {
             <table style={{ width: '100%' }}>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Username</th>
                         <th>Age</th>
@@ -158,6 +159,7 @@ function DisplayData() {
                         data.users.map((user) => {
                             return (
                                 <tr key={user.id}>
+                                    <td>{user.id}</td>
                                     <td>{user.name}</td>
                                     <td>{user.username}</td>
                                     <td>{user.age}</td>
